@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import Child from './Child'
+import './App.css'
+import { useEffect } from 'react'
+import axios from 'axios'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  useEffect(() => {
+    axios.get("/api/mmdb/movie/v3/list/hot.json?ct=%E6%AD%A6%E6%B1%89&ci=57&channelId=4").then(res => {
+      console.log(22);
+      console.log(res.data);
+    })
+  })
+
+
+  return <div>
+    app
+    <ul>
+      <li>11111</li>
+      <li>22222</li>
+    </ul>
+    <Child />
+  </div>
 }
 
-export default App;
+export default App
