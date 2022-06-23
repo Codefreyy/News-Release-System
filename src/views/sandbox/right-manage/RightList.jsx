@@ -1,11 +1,9 @@
 import React from 'react'
 
-const Login = () => {
+export default function RightList() {
   return (
     <div>
-      login
+      RightList
     </div>
   )
 }
-
-export default Login;

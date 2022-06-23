@@ -1,11 +1,9 @@
 import React from 'react'
 
-const Login = () => {
+export default function UserList() {
   return (
     <div>
-      login
+      UserList
     </div>
   )
 }
-
-export default Login;

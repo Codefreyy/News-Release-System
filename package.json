@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.27.2",
+    "index.json": "^1.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^6.3.0",
