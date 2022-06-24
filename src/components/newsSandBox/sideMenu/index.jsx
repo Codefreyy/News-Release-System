@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './sidemenu.css'
 import { Layout, Menu } from 'antd';
 import {
@@ -10,56 +10,53 @@ import {
   ControlOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const { Sider } = Layout;
 
+// 本地图标映射数组
+const iconList = {
+  "/home": <UserOutlined />,
+  "/user-manage": <UserOutlined />,
+  "/user-manage/list": <UserOutlined />,
+  "/right-manage": <UserOutlined />,
+  "/right-manage/role/list": <UserOutlined />,
+  "/right-manage/right/list": <UserOutlined />
+  //.......
+}
+
+// 侧边栏
 export default function SideMenu() {
+  const [menu, setmenu] = useState([])
+  // 获取菜单数据
+  useEffect(() => {
+    axios.get("http://localhost:5000/rights?_embed=children").then(res => {
+      console.log(res.data);
+      setmenu(res.data);
+    })
+  }, [])
+
   let navigate = useNavigate();
-  const menuList = [
-    {
-      key: "/home",
-      label: "首页",
-      icon: <HomeOutlined />,
 
-    },
-    {
-      key: "/use-manage",
-      label: "用户管理",
-      icon: <UserOutlined />,
-      children: [{
-        key: "/user-manage/list",
-        icon: <UserOutlined />,
-        label: "用户列表",
-      }],
-    },
-    {
-      key: "/right-manage",
-      label: "权限管理",
-      icon: <KeyOutlined />,
-      children: [{
-        key: "/right-manage/role/list",
-        label: "权限列表",
-        icon: <FundOutlined />
-      },
-      {
-        key: "/right-manage/right/list",
-        label: "角色列表",
-        icon: <HomeOutlined />,
-      }],
-    },
-
-  ]
-
-  const items = menuList.map((item) => {
+  //遍历后端数据，形成菜单结构
+  const items = menu.map((item) => {
     return (
-      {
-        label: item.label,
-        key: item.key,
-        icon: item.icon,
-        children: item.children ? item.children : ''
-      }
+      item.pagepermisson ?
+        {
+          label: item.title,
+          key: item.key,
+          icon: iconList[item.key],
+          children: item.children?.length !== 0 ? item.children.map((el) => {
+            return (el.pagepermisson === 1) ? {
+              label: el.title,
+              key: el.key,
+              icon: iconList[el.key]
+            } : null
+          }) : null,
+        } : ''
     )
   })
 
+  // 点击菜单栏获取对应组件路径
   const onClick = (e) => {
     // console.log(e.keyPath[0])
     navigate(e.keyPath[0])
@@ -67,14 +64,18 @@ export default function SideMenu() {
 
   return (
     <Sider trigger={null} collapsible collapsed={false}>
-      <div className="logo" >全球新闻发布系统</div>
-      <Menu
-        theme="dark"
-        mode="inline"
-        defaultSelectedKeys={['/home']}
-        items={items}
-        onClick={onClick}
-      />
+      <div style={{ display: "flex", height: "100%", "flexDirection": "column" }}>
+        <div className="logo" >全球新闻发布系统</div>
+        <div style={{ flex: 1, "overflow": "auto" }}>
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={['/home']}
+            items={items}
+            onClick={onClick}
+          />
+        </div>
+      </div>
     </Sider>
   )
 }
