@@ -13,20 +13,29 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const { Sider } = Layout;
 
+
+
+
+/* todo：为什么setPath设置了，但是每次刷新后 defaultselect的不是之前的path */
 // 本地图标映射数组
 const iconList = {
-  "/home": <UserOutlined />,
+  "/home": <HomeOutlined />,
   "/user-manage": <UserOutlined />,
   "/user-manage/list": <UserOutlined />,
-  "/right-manage": <UserOutlined />,
-  "/right-manage/role/list": <UserOutlined />,
-  "/right-manage/right/list": <UserOutlined />
-  //.......
+  "/right-manage": <KeyOutlined />,
+  "/right-manage/role/list": <KeyOutlined />,
+  "/right-manage/right/list": <KeyOutlined />,
+  "/news-manage": <FundOutlined />,
+  "/audit-manage": <ControlOutlined />,
+  "/publish-manage": <EditOutlined />
+
 }
 
 // 侧边栏
-export default function SideMenu() {
+export default function SideMenu(props) {
   const [menu, setmenu] = useState([])
+  const [path, setPath] = useState([])
+  const [openPath, setOpenPath] = useState([])
   // 获取菜单数据
   useEffect(() => {
     axios.get("http://localhost:5000/rights?_embed=children").then(res => {
@@ -58,8 +67,12 @@ export default function SideMenu() {
 
   // 点击菜单栏获取对应组件路径
   const onClick = (e) => {
-    // console.log(e.keyPath[0])
     navigate(e.keyPath[0])
+    const selectedPath = [`${e.keyPath[0]}`]
+    const openPath = ["/" + `${e.keyPath[0].split("/")[1]}`];
+    console.log(openPath);
+    setPath(selectedPath);
+    setOpenPath(openPath)
   }
 
   return (
@@ -70,9 +83,10 @@ export default function SideMenu() {
           <Menu
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={['/home']}
+            SelectedKeys={path}
             items={items}
             onClick={onClick}
+            OpenKeys={openPath}
           />
         </div>
       </div>
