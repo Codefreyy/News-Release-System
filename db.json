@@ -183,7 +183,7 @@
       "title": "用户列表",
       "rightId": 2,
       "key": "/user-manage/list",
-      "pagepermisson": 1,
+      "pagepermisson": 0,
       "grade": 2
     },
     {

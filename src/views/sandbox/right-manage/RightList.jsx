@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Tag, Button, Modal } from 'antd';
+import { Table, Tag, Button, Modal, Popover, Switch } from 'antd';
 import axios from 'axios';
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 const { confirm } = Modal;
@@ -51,11 +51,36 @@ export default function RightList() {
           <Button shape='circle' danger icon={<DeleteOutlined />} onClick={() => {
             showConfirm(item)
           }}></Button>
-          <Button type='primary' shape='circle' icon={<EditOutlined />}></Button>
+
+          <Popover title='配置项' content={
+            <div>
+              <Switch checked={item.pagepermisson}
+                onChange={() => {
+                  switchhandler(item)
+                }}></Switch>
+            </div>
+          } trigger={item.pagepermisson === undefined ? '' : 'click'}>
+
+            <Button type='primary' shape='circle' icon={<EditOutlined />} disabled={item.pagepermisson === undefined}></Button>
+          </Popover>
         </div>
       }
     },
   ];
+
+  const switchhandler = (item) => {
+    item.pagepermisson = item.pagepermisson === 1 ? 0 : 1
+    setdataSource([...dataSource])
+    if (item.grade === 1) {
+      axios.patch(`http://localhost:5000/rights/${item.id}`, {
+        pagepermisson: item.pagepermisson
+      })
+    } else {
+      axios.patch(`http://localhost:5000/children/${item.id}`, {
+        pagepermisson: item.pagepermisson
+      })
+    }
+  }
 
   const showConfirm = (item) => {
     confirm({
@@ -83,13 +108,11 @@ export default function RightList() {
     } else {
       // 前端
       let parentList = dataSource.filter(data => data.id === item.rightId)
-
       parentList[0].children = parentList[0].children.filter(data => data.id !== item.id)
-
       setdataSource([...dataSource])
 
       // 后端
-      // axios.delete(`http://localhost:5000/right/${item.rightId}/`)
+      // axios.delete(`http://localhost:5000/children/${item.id}/`)
     }
 
   }
