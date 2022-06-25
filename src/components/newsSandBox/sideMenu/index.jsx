@@ -83,10 +83,10 @@ export default function SideMenu(props) {
           <Menu
             theme="dark"
             mode="inline"
-            SelectedKeys={path}
+            defaultSelectedKeys={path}
             items={items}
             onClick={onClick}
-            OpenKeys={openPath}
+            defaultOpenKeys={openPath}
           />
         </div>
       </div>
