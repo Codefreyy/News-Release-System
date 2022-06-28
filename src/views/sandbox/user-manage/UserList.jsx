@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { Table, Switch, Button, Modal, Popover, Form, Input, Select } from 'antd'
+import React, { useState, useEffect, useRef } from 'react'
+import { Table, Switch, Button, Modal, Popover } from 'antd'
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import axios from 'axios'
+import UserForm from '../../../components/user-manage/UserForm';
 const { confirm } = Modal;
-const { Option } = Select
+
 
 
 export default function UserList() {
@@ -11,7 +12,7 @@ export default function UserList() {
   const [visible, setVisible] = useState(false);
   const [roleList, setroleList] = useState([])
   const [regionList, setregionList] = useState([])
-
+  const addForm = useRef(null)
 
   // 获取角色列表
   useEffect(() => {
@@ -111,12 +112,30 @@ export default function UserList() {
     setdataSource(dataSource.filter(el =>
       el.id !== item.id
     ))
-    // axios.delete(`http://localhost:5000/roles/${item.id}`)
+    axios.delete(`http://localhost:5000/users/${item.id}`)
 
   }
 
+  //提交表单
+  const addFormOK = () => {
+    addForm.current.validateFields().then(value => {
+      setVisible(false);
+      //post到后端生成id，再设置dataSource，方便后面的删除和更新
+      axios.post(`http://localhost:5000/users`, {
+        ...value,
+        "roleState": true,
+        "default": false,
+      }).then(res => {
+        setdataSource([...dataSource, res.data])
+      })
+
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
   const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
-    const [form] = Form.useForm();
+
     return (
       <Modal
         visible={visible}
@@ -126,85 +145,9 @@ export default function UserList() {
         onCancel={() => {
           setVisible(false)
         }}
-        onOk={() => {
-          form
-            .validateFields()
-            .then((values) => {
-              form.resetFields();
-              onCreate(values);
-            })
-            .catch((info) => {
-              console.log('Validate Failed:', info);
-            });
-        }}
+        onOk={addFormOK}
       >
-        <Form
-          form={form}
-          layout="vertical"
-
-        >
-          <Form.Item
-            name="用户名"
-            label="用户名"
-            rules={[
-              {
-                required: true, message: '请输入用户名',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="密码"
-            label="密码"
-            rules={[
-              {
-                required: true,
-                message: '请输入密码',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="区域"
-            label="区域"
-            rules={[
-              { required: true, message: '请选择用户所在区域', },
-            ]}
-          >
-            <Select
-              allowClear
-            >
-              {
-                regionList.map(item => <Option
-                  value={item.value} key={item.id}>
-                  {item.title}
-                </Option>)
-              }
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="角色"
-            label="角色"
-            rules={[
-              { required: true, message: '请选择用户权限角色', },
-            ]}
-          >
-
-            <Select
-              allowClear
-            >
-              {
-                roleList.map(item => <Option
-                  value={item.id} key={item.id}>
-                  {item.roleName}
-                </Option>)
-              }
-            </Select>
-
-          </Form.Item>
-        </Form>
+        <UserForm regionList={regionList} roleList={roleList} ref={addForm}></UserForm>
       </Modal>
     );
   };
