@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Input, Select } from 'antd'
 
 const { Option } = Select
@@ -18,6 +18,10 @@ const UserForm = React.forwardRef((props, ref) => {
             setRegionDisabled(false)
         }
     }
+
+    useEffect(() => {
+        setRegionDisabled(props.isUpdateDisabled)
+    }, [props.isUpdateDisabled])
     return (
         <>
             <Form

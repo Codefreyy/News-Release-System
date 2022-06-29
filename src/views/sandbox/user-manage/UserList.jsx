@@ -12,7 +12,12 @@ export default function UserList() {
   const [visible, setVisible] = useState(false);
   const [roleList, setroleList] = useState([])
   const [regionList, setregionList] = useState([])
+  const [isUpdatevisible, setUpdatevisible] = useState(false)
   const addForm = useRef(null)
+  const updateForm = useRef(null)
+  const [current, setcurrent] = useState(null)
+  const [isUpdateDisabled, setisUpdateDisabled] = useState(false)
+
 
   // 获取角色列表
   useEffect(() => {
@@ -86,13 +91,30 @@ export default function UserList() {
             </div>
           } trigger={item.pagepermisson === undefined ? '' : 'click'}>
 
-            <Button type='primary' shape='circle' icon={<EditOutlined />} disabled={item.default}></Button>
+            <Button type='primary' shape='circle' icon={<EditOutlined />} disabled={item.default} onClick={() => {
+              handleUpdate(item)
+            }}></Button>
           </Popover>
         </div>
       }
     },
   ];
 
+
+  const handleUpdate = (item) => {
+    setTimeout(() => {
+      setUpdatevisible(true)
+      if (item.roleId === 1) {
+        //禁用
+        setisUpdateDisabled(true)
+      } else {
+        //取消禁用
+        setisUpdateDisabled(false)
+      }
+      updateForm.current.setFieldsValue(item)
+    }, 0)
+    setcurrent(item)
+  }
   // 提示确认删除
   const showConfirm = (item) => {
     confirm({
@@ -134,21 +156,55 @@ export default function UserList() {
     })
   }
 
+  const UpdateFormOK = () => {
+    updateForm.current.validateFields().then(value => {
+      setUpdatevisible(false);
+      console.log(value);
+      setdataSource(dataSource.map(item => {
+        if (item.id === current.id) {
+          return {
+            ...item,
+            ...value,
+            role: roleList.filter(data => data.id === value.roleId)[0]
+            // 上面这行是找出中文名
+          }
+        }
+        return item
+      }))
+
+
+    })
+  }
+
   const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
 
     return (
-      <Modal
-        visible={visible}
-        title="添加用户"
-        okText="确定"
-        cancelText="取消"
-        onCancel={() => {
-          setVisible(false)
-        }}
-        onOk={addFormOK}
-      >
-        <UserForm regionList={regionList} roleList={roleList} ref={addForm}></UserForm>
-      </Modal>
+      <>
+        <Modal
+          visible={visible}
+          title="添加用户"
+          okText="确定"
+          cancelText="取消"
+          onCancel={() => {
+            setVisible(false)
+          }}
+          onOk={addFormOK}
+        >
+          <UserForm regionList={regionList} roleList={roleList} ref={addForm}></UserForm>
+        </Modal>
+
+        <Modal
+          visible={isUpdatevisible}
+          title="更新用户"
+          okText="更新"
+          cancelText="取消"
+          onCancel={() => {
+            setUpdatevisible(false)
+          }}
+          onOk={UpdateFormOK}
+        >
+          <UserForm regionList={regionList} roleList={roleList} ref={updateForm} isUpdateDisabled={isUpdateDisabled} ></UserForm>
+        </Modal></>
     );
   };
 
