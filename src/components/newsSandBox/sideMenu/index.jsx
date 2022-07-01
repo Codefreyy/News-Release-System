@@ -46,10 +46,11 @@ export default function SideMenu(props) {
 
   let navigate = useNavigate();
 
+  const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
   //遍历后端数据，形成菜单结构
   const items = menu.map((item) => {
     return (
-      item.pagepermisson ?
+      item.pagepermisson && rights.includes(item.key) ?
         {
           label: item.title,
           key: item.key,

@@ -11,6 +11,10 @@ export default function TopHeader() {
     const changeCollapsed = () => {
         setcollapsed(!collapsed)
     }
+
+    const { role: { roleName }, username } = JSON.parse(localStorage.getItem("token"))
+
+
     const menu = (
         <Menu
             items={[
@@ -18,7 +22,7 @@ export default function TopHeader() {
                     key: '1',
                     label: (
                         <a href="/#">
-                            个人资料
+                            {roleName}
                         </a>
                     ),
                 },
@@ -45,7 +49,7 @@ export default function TopHeader() {
             }
 
             <div style={{ float: "right" }}>
-                <span>欢迎彭郁洁回来！  </span>
+                <span>欢迎{username}回来！  </span>
                 <Dropdown overlay={menu}>
                     <Avatar size={24} icon={<UserOutlined />} />
                 </Dropdown>

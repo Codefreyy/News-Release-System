@@ -1,12 +1,28 @@
 import React from 'react'
 import classes from './Login.module.css'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import ParticlesBg from 'particles-bg'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 
 
-const Login = () => {
+
+const Login = (props) => {
+  let navigate = useNavigate()
+  const onFinish = (values) => {
+    axios.get(`http://localhost:5000/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`).then(res => {
+      console.log(res.data)
+      if (res.data.length === 0) {
+        message.error("用户名或密码不匹配！")
+      } else {
+        localStorage.setItem("token", JSON.stringify(res.data[0]))
+        navigate(`/home`)
+        message.info("登录成功！")
+      }
+    })
+  }
   return (
 
     <div className={classes.FormOuter}
@@ -17,7 +33,7 @@ const Login = () => {
         <Form
           name="normal_login"
           className="login-form"
-        // onFinish={onFinish}
+          onFinish={onFinish}
         >
           <Form.Item
             name="username"

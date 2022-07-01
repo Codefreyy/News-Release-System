@@ -18,7 +18,15 @@ export default function UserList() {
   const [current, setcurrent] = useState(null)
   const [isUpdateDisabled, setisUpdateDisabled] = useState(false)
 
+  const handleChange = (item) => {
+    // console.log(item)
+    item.roleState = !item.roleState
+    setdataSource([...dataSource])
 
+    axios.patch(`http://localhost:5000/users/${item.id}`, {
+      roleState: item.roleState
+    })
+  }
   // 获取角色列表
   useEffect(() => {
     axios.get("http://localhost:5000/roles").then(res => {
@@ -87,7 +95,9 @@ export default function UserList() {
       dataIndex: 'roleState',
       key: 'roleState',
       render: (roleState, item) => {
-        return <Switch checked={roleState} disabled={item.default}></Switch>
+        return <Switch checked={roleState} disabled={item.default} onChange={() => {
+          handleChange(item)
+        }}></Switch>
       }
     },
 
