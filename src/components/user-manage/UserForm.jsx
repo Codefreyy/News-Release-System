@@ -18,6 +18,54 @@ const UserForm = React.forwardRef((props, ref) => {
             setRegionDisabled(false)
         }
     }
+    const roleObj = {
+        "1": "superAdmin",
+        "2": "admin",
+        "3": "editor",
+    }
+    const { roleId, region } = JSON.parse(localStorage.getItem("token"))
+
+    // 区域要不要禁用
+    const checkRegionDisabled = (item) => {
+        console.log('i am item', item);
+        // 更新时：
+        if (props.isUpdate) {
+            // 如果当前用户是超级管理员，就可以更新别人的区域和角色
+            if (roleObj[roleId] === "superAdmin") {
+                return false
+                // 禁用为假 = 不禁用
+            } else {
+                return true
+            }
+
+            //创建时：
+        } else {
+            if (roleObj[roleId] === "superAdmin") {
+                return false
+            }
+            return item.value !== region
+        }
+    }
+    // 角色要不要禁用
+    const checkRoleDisabled = (item) => {
+        if (props.isUpdate) {
+            // 如果当前用户是超级管理员，就可以更新别人的区域和角色
+            if (roleObj[roleId] === "superAdmin") {
+                return false
+                // 禁用为假 = 不禁用
+            } else {
+                return true
+            }
+
+            //创建时：
+        } else {
+            if (roleObj[roleId] === "superAdmin") {
+                return false
+            } else {
+                return roleObj[item.id] !== "editor"
+            }
+        }
+    }
 
     useEffect(() => {
         setRegionDisabled(props.isUpdateDisabled)
@@ -67,6 +115,7 @@ const UserForm = React.forwardRef((props, ref) => {
                     >
                         {
                             regionList.map(item => <Option
+                                disabled={checkRegionDisabled(item)}
                                 value={item.value} key={item.id}>
                                 {item.title}
                             </Option>)
@@ -86,8 +135,9 @@ const UserForm = React.forwardRef((props, ref) => {
                     >
                         {
                             roleList.map(item => <Option
-                                value={item.id} key={item.id}>
+                                value={item.id} key={item.id} disabled={checkRoleDisabled(item)}>
                                 {item.roleName}
+
                             </Option>)
                         }
                     </Select>

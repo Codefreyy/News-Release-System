@@ -42,12 +42,23 @@ export default function UserList() {
     })
   }, [])
 
+  const { roleId, region, username } = JSON.parse(localStorage.getItem("token"))
+
+
   // 用户列表
   useEffect(() => {
+    const roleObj = {
+      "1": "superAdmin",
+      "2": "admin",
+      "3": "editor",
+    }
     axios.get("http://localhost:5000/users?expand=role").then(res => {
-      setdataSource(res.data)
+      setdataSource(roleObj[roleId] === "superAdmin" ? res.data : [
+        ...res.data.filter(item => item.username === username),
+        ...res.data.filter(item => item.region === region && roleObj[item.roleId] === "editor")
+      ])
     })
-  }, [])
+  }, [roleId, region, username])
 
 
   // 表格的表头

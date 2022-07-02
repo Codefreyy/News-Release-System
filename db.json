@@ -21,7 +21,7 @@
     {
       "username": "钢蛋",
       "password": "123",
-      "roleState": false,
+      "roleState": true,
       "default": false,
       "region": "南极洲",
       "roleId": 2,
@@ -30,7 +30,7 @@
     {
       "username": "诸葛山珍",
       "password": "123",
-      "roleState": false,
+      "roleState": true,
       "default": false,
       "region": "",
       "roleId": 1,
@@ -206,7 +206,8 @@
         "/publish-manage",
         "/publish-manage/unpublished",
         "/publish-manage/published",
-        "/publish-manage/sunset"
+        "/publish-manage/sunset",
+        "/user-manage"
       ]
     }
   ],
