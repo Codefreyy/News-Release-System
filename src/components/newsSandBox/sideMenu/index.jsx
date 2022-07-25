@@ -71,7 +71,6 @@ export default function SideMenu(props) {
     navigate(e.keyPath[0])
     const selectedPath = [`${e.keyPath[0]}`]
     const openPath = ["/" + `${e.keyPath[0].split("/")[1]}`];
-    console.log(openPath);
     setPath(selectedPath);
     setOpenPath(openPath)
   }

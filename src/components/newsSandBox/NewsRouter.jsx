@@ -46,7 +46,6 @@ const NewsRouter = () => {
     }, [])
 
     const checkRoute = (item) => {
-        console.log('item>>>', item)
         return LocalRouterMap[item.key] && item.pagepermisson === 1
     }
     const { role: { rights } } = JSON.parse(localStorage.getItem("token"))

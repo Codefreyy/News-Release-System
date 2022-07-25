@@ -1,10 +1,14 @@
 import React from 'react'
+import { PageHeader } from 'antd';
 
 const Published = () => {
     return (
-        <div>
-            Published
-        </div>
+        <>
+            <PageHeader
+                className="site-page-header"
+                title="撰写新闻"
+            />
+        </>
     )
 }
 
