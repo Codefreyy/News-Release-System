@@ -38,7 +38,7 @@ export default function SideMenu(props) {
   const [openPath, setOpenPath] = useState([])
   // 获取菜单数据
   useEffect(() => {
-    axios.get("http://localhost:5000/rights?_embed=children").then(res => {
+    axios.get("/rights?_embed=children").then(res => {
       console.log(res.data);
       setmenu(res.data);
     })

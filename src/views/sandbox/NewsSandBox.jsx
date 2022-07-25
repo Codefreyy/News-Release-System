@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './NewsSandBox.css'
-import { Route, Routes, Navigate } from 'react-router-dom';
-import UserList from './user-manage/UserList';
-import RoleList from './role-manage/RoleList';
-import RightList from './right-manage/RightList';
-import Home from './home/Home';
-import NoPermission from './nopermission/NoPermission';
+
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 import SideMenu from '../../components/newsSandBox/sideMenu/index';
 import TopHeader from '../../components/newsSandBox/TopHeader'
 import { Layout } from 'antd'
+import NewsRouter from '../../components/newsSandBox/NewsRouter';
 const { Content } = Layout
 
 const NewsSandBox = () => {
+    NProgress.start()
+    useEffect(() => {
+        NProgress.done()
+    })
     return (
 
         <Layout>
@@ -27,16 +30,8 @@ const NewsSandBox = () => {
                         overflow: "auto"
                     }}
                 >
+                    <NewsRouter></NewsRouter>
 
-                    <Routes>
-                        <Route path="/home" element={<Home />} />
-                        <Route path="user-manage/list" element={<UserList />} />
-                        <Route path="right-manage/role/list" element={<RoleList />} />
-                        <Route path="right-manage/right/list" element={<RightList />} />
-                        <Route path="/" element={<Navigate replace from="/" to="home" />} />
-                        <Route path='*' element={<NoPermission />} />
-
-                    </Routes>
                 </Content>
             </Layout>
 

@@ -14,14 +14,14 @@ export default function RoleList() {
 
 
   useEffect(() => {
-    axios.get("http://localhost:5000/roles").then(res => {
+    axios.get("/roles").then(res => {
       console.log(res.data);
       setdataSource(res.data)
     })
   }, [])
 
   useEffect(() => {
-    axios.get("http://localhost:5000/rights?_embed=children").then(res => {
+    axios.get("/rights?_embed=children").then(res => {
       //首页的children改成空字符串 就不会有树形结构
       const list = res.data
       list.forEach((item) => {
@@ -98,7 +98,7 @@ export default function RoleList() {
     setdataSource(dataSource.filter(el =>
       el.id !== item.id
     ))
-    // axios.delete(`http://localhost:5000/roles/${item.id}`)
+    // axios.delete(`/roles/${item.id}`)
 
   }
 
@@ -124,7 +124,7 @@ export default function RoleList() {
       return item
     }))
     //后端
-    axios.patch(`http://localhost:5000/roles/${currentId}`, {
+    axios.patch(`/roles/${currentId}`, {
       rights: currentRights
     })
   }

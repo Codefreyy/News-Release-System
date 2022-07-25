@@ -1,7 +1,7 @@
 import React from 'react'
 import classes from './Login.module.css'
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button,  Form, Input, message } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import ParticlesBg from 'particles-bg'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 const Login = (props) => {
   let navigate = useNavigate()
   const onFinish = (values) => {
-    axios.get(`http://localhost:5000/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`).then(res => {
+    axios.get(`/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`).then(res => {
       console.log(res.data)
       if (res.data.length === 0) {
         message.error("用户名或密码不匹配！")

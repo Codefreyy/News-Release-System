@@ -8,7 +8,7 @@ export default function RightList() {
   const [dataSource, setdataSource] = useState([])
 
   useEffect(() => {
-    axios.get("http://localhost:5000/rights?_embed=children").then(res => {
+    axios.get("/rights?_embed=children").then(res => {
       //首页的children改成空字符串 就不会有树形结构
       const list = res.data
       list.forEach((item) => {
@@ -72,11 +72,11 @@ export default function RightList() {
     item.pagepermisson = item.pagepermisson === 1 ? 0 : 1
     setdataSource([...dataSource])
     if (item.grade === 1) {
-      axios.patch(`http://localhost:5000/rights/${item.id}`, {
+      axios.patch(`/rights/${item.id}`, {
         pagepermisson: item.pagepermisson
       })
     } else {
-      axios.patch(`http://localhost:5000/children/${item.id}`, {
+      axios.patch(`/children/${item.id}`, {
         pagepermisson: item.pagepermisson
       })
     }
@@ -102,7 +102,7 @@ export default function RightList() {
       setdataSource(dataSource.filter(el =>
         el.id !== item.id
       ))
-      axios.delete(`http://localhost:5000/rights/${item.id}`).then(res => {
+      axios.delete(`/rights/${item.id}`).then(res => {
         console.log('删除', res);
       }).catch(err => { console.log('删除失败', err); })
     } else {
@@ -112,7 +112,7 @@ export default function RightList() {
       setdataSource([...dataSource])
 
       // 后端
-      // axios.delete(`http://localhost:5000/children/${item.id}/`)
+      // axios.delete(`/children/${item.id}/`)
     }
 
   }

@@ -23,13 +23,13 @@ export default function UserList() {
     item.roleState = !item.roleState
     setdataSource([...dataSource])
 
-    axios.patch(`http://localhost:5000/users/${item.id}`, {
+    axios.patch(`/users/${item.id}`, {
       roleState: item.roleState
     })
   }
   // 获取角色列表
   useEffect(() => {
-    axios.get("http://localhost:5000/roles").then(res => {
+    axios.get("/roles").then(res => {
       setroleList(res.data)
       console.log('you wanna see', res.data);
     })
@@ -37,7 +37,7 @@ export default function UserList() {
 
   // 获取区域列表
   useEffect(() => {
-    axios.get("http://localhost:5000/regions").then(res => {
+    axios.get("/regions").then(res => {
       setregionList(res.data)
     })
   }, [])
@@ -52,7 +52,7 @@ export default function UserList() {
       "2": "admin",
       "3": "editor",
     }
-    axios.get("http://localhost:5000/users?expand=role").then(res => {
+    axios.get("/users?expand=role").then(res => {
       setdataSource(roleObj[roleId] === "superAdmin" ? res.data : [
         ...res.data.filter(item => item.username === username),
         ...res.data.filter(item => item.region === region && roleObj[item.roleId] === "editor")
@@ -171,7 +171,7 @@ export default function UserList() {
     setdataSource(dataSource.filter(el =>
       el.id !== item.id
     ))
-    axios.delete(`http://localhost:5000/users/${item.id}`)
+    axios.delete(`/users/${item.id}`)
 
   }
 
@@ -180,7 +180,7 @@ export default function UserList() {
     addForm.current.validateFields().then(value => {
       setVisible(false);
       //post到后端生成id，再设置dataSource，方便后面的删除和更新
-      axios.post(`http://localhost:5000/users`, {
+      axios.post(`/users`, {
         ...value,
         "roleState": true,
         "default": false,
@@ -240,7 +240,7 @@ export default function UserList() {
           }}
           onOk={UpdateFormOK}
         >
-          <UserForm regionList={regionList} roleList={roleList} ref={updateForm} isUpdateDisabled={isUpdateDisabled} ></UserForm>
+          <UserForm regionList={regionList} roleList={roleList} ref={updateForm} isUpdateDisabled={isUpdateDisabled} isUpdate={true}></UserForm>
         </Modal></>
     );
   };
