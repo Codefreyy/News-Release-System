@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Button, Table, Modal } from 'antd'
 import axios from 'axios'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, UploadOutlined } from '@ant-design/icons'
+import { useNavigate } from "react-router";
 const { confirm } = Modal
+
 export default function NewsDraft() {
+    const navigate = useNavigate();
     const [dataSource, setdataSource] = useState([])
 
     const { username } = JSON.parse(localStorage.getItem("token"))
@@ -46,7 +49,9 @@ export default function NewsDraft() {
                 return <div>
                     <Button danger shape="circle" icon={<DeleteOutlined />} onClick={() => confirmMethod(item)} />
 
-                    <Button shape="circle" icon={<EditOutlined />} />
+                    <Button shape="circle" icon={<EditOutlined />} onClick={() => {
+                        navigate(`/news-manage/update/${item.id}`)
+                    }} />
 
                     <Button type="primary" shape="circle" icon={<UploadOutlined />} />
                 </div>
