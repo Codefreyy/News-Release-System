@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Table, Modal } from 'antd'
+import { Button, Table, Modal, notification } from 'antd'
 import axios from 'axios'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, UploadOutlined } from '@ant-design/icons'
 import { useNavigate } from "react-router";
@@ -53,13 +53,29 @@ export default function NewsDraft() {
                         navigate(`/news-manage/update/${item.id}`)
                     }} />
 
-                    <Button type="primary" shape="circle" icon={<UploadOutlined />} />
+                    <Button type="primary" shape="circle" icon={<UploadOutlined />} onClick={() => {
+                        handleCheck(item.id)
+                    }} />
                 </div>
             }
         }
     ];
 
+    const handleCheck = (id) => {
+        axios.patch(`/news/${id}`, {
+            auditState: 1
+        }).then(res => {
+            navigate("/audit-manage/list");
 
+            notification.info({
+                message: `通知`,
+                description:
+                    `您可以到审核列表中查看您的新闻!`,
+                placement: "bottomRight",
+
+            })
+        })
+    }
     const confirmMethod = (item) => {
         confirm({
             title: '你确定要删除?',
