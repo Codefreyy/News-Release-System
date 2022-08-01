@@ -85,6 +85,7 @@ export default function SideMenu(props) {
             theme="dark"
             mode="inline"
             defaultSelectedKeys={path}
+            selectedKeys={path}
             items={items}
             onClick={onClick}
             defaultOpenKeys={openPath}

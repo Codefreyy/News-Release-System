@@ -68,7 +68,7 @@ export default function RoleList() {
           <Modal title="权限分配" visible={isModalVisible} onOk={handleTreeOk} onCancel={handleTreeCancel}>
             <Tree
               checkStrictly={true}
-              checkable
+              checkable={true}
               checkedKeys={currentRights}
               onCheck={onCheck}
               treeData={rightList}

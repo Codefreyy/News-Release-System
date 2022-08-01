@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom';
 import UserList from '../../views/sandbox/user-manage/UserList';
-import RoleList from '../../views/sandbox/role-manage/RoleList';
+import RoleList from '../../views/sandbox/right-manage/RoleList';
 import RightList from '../../views/sandbox/right-manage/RightList';
 import Home from '../../views/sandbox/home/Home';
 import NoPermission from '../../views/sandbox/nopermission/NoPermission';
@@ -54,6 +54,8 @@ const NewsRouter = () => {
         return LocalRouterMap[item.key] && (item.pagepermisson || item.routepermisson)
     }
     const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
+
+    console.log("currentrIGHT", rights)
 
     const checkUserPermission = (item) => {
         return rights.includes(item.key)
