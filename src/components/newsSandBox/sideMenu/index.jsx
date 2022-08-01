@@ -70,6 +70,7 @@ export default function SideMenu(props) {
   const onClick = (e) => {
     navigate(e.keyPath[0])
     const selectedPath = [`${e.keyPath[0]}`]
+    // eslint-disable-next-line
     const openPath = ["/" + `${e.keyPath[0].split("/")[1]}`];
     setPath(selectedPath);
     setOpenPath(openPath)
