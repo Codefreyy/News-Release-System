@@ -129,10 +129,10 @@
         "/right-manage/right/delete",
         "/news-manage/update/:id",
         "/news-manage/preview/:id",
-        "/news-manage/category",
         "/publish-manage/unpublished",
         "/publish-manage/published",
-        "/publish-manage/sunset"
+        "/publish-manage/sunset",
+        "/news-manage/category"
       ],
       "right": [
         "/user-manage/add",
@@ -524,7 +524,7 @@
       "author": "admin",
       "roleId": 1,
       "auditState": 2,
-      "publishState": 2,
+      "publishState": 3,
       "createTime": 1615778715619,
       "star": 600,
       "view": 983,
@@ -554,7 +554,7 @@
       "author": "admin",
       "roleId": 1,
       "auditState": 2,
-      "publishState": 2,
+      "publishState": 3,
       "createTime": 1615778777924,
       "star": 100,
       "view": 201,
@@ -607,21 +607,6 @@
       "publishTime": 1615778917615
     },
     {
-      "title": "测试",
-      "categoryId": 3,
-      "content": "<p>测试</p>\n",
-      "region": "",
-      "author": "admin",
-      "roleId": 1,
-      "auditState": 2,
-      "publishState": 3,
-      "createTime": 1616203436307,
-      "star": 1,
-      "view": 6,
-      "id": 9,
-      "publishTime": 1616203519274
-    },
-    {
       "title": "sss",
       "category": 2,
       "categoryId": 3,
@@ -665,21 +650,6 @@
       "star": 0,
       "view": 0,
       "id": 19
-    },
-    {
-      "title": "董仲舒",
-      "category": 6,
-      "categoryId": 3,
-      "content": "<p>a我我我我我我我我说不出口</p>\n",
-      "region": "全球",
-      "author": "admin",
-      "roleId": 1,
-      "auditState": 0,
-      "publishState": 0,
-      "createTime": 1658814259955,
-      "star": 0,
-      "view": 0,
-      "id": 20
     },
     {
       "title": "欸奥",
@@ -733,8 +703,8 @@
       "region": "南极洲",
       "author": "钢蛋",
       "roleId": 2,
-      "auditState": 1,
-      "publishState": 0,
+      "auditState": 2,
+      "publishState": 2,
       "createTime": 1659352231996,
       "star": 0,
       "view": 0,
@@ -754,6 +724,22 @@
       "star": 0,
       "view": 0,
       "id": 25
+    },
+    {
+      "title": "刘亦菲",
+      "category": 1,
+      "categoryId": 3,
+      "content": "<p>啊</p>\n",
+      "region": "全球",
+      "author": "admin",
+      "roleId": 1,
+      "auditState": 2,
+      "publishState": 2,
+      "createTime": 1659409164865,
+      "star": 0,
+      "view": 0,
+      "id": 26,
+      "publishTime": 1659409182432
     }
   ]
 }

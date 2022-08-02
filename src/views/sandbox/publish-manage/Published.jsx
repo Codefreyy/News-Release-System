@@ -1,15 +1,17 @@
-import React from 'react'
-import { PageHeader } from 'antd';
+import NewsPublish from '../../../components/publish-manage/NewsPublish'
+import usePublish from '../../../components/publish-manage/usePublish'
+import { Button } from 'antd'
 
-const Published = () => {
+
+export default function Published() {
+
+    const { dataSource, handleSunset } = usePublish(2)
+
     return (
-        <>
-            <PageHeader
-                className="site-page-header"
-                title="撰写新闻"
-            />
-        </>
+        <div>
+            <NewsPublish dataSource={dataSource} button={(id) => <Button onClick={() => {
+                handleSunset(id)
+            }}>下线</Button>}></NewsPublish>
+        </div>
     )
 }
-
-export default Published
