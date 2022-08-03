@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux'
 const { Sider } = Layout;
 
 
@@ -32,7 +33,7 @@ const iconList = {
 }
 
 // 侧边栏
-export default function SideMenu(props) {
+function SideMenu(props) {
   const [menu, setmenu] = useState([])
   const [path, setPath] = useState([])
   const [openPath, setOpenPath] = useState([])
@@ -77,7 +78,7 @@ export default function SideMenu(props) {
   }
 
   return (
-    <Sider trigger={null} collapsible collapsed={false}>
+    <Sider trigger={null} collapsible collapsed={props.isCollapsed}>
       <div style={{ display: "flex", height: "100%", "flexDirection": "column" }}>
         <div className="logo" >全球新闻发布系统</div>
         <div style={{ flex: 1, "overflow": "auto" }}>
@@ -95,3 +96,8 @@ export default function SideMenu(props) {
     </Sider>
   )
 }
+const mapStateToProps = ({ CollapsedReducer: { isCollapsed } }) => (
+  { isCollapsed }
+)
+
+export default connect(mapStateToProps)(SideMenu)
