@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { Spin } from 'antd'
+import { connect } from 'react-redux';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import UserList from '../../views/sandbox/user-manage/UserList';
 import RoleList from '../../views/sandbox/right-manage/RoleList';
 import RightList from '../../views/sandbox/right-manage/RightList';
 import Home from '../../views/sandbox/home/Home';
 import NoPermission from '../../views/sandbox/nopermission/NoPermission';
-
 import NewsAdd from '../../views/sandbox/news-manage/NewsAdd';
 import NewsDraft from '../../views/sandbox/news-manage/NewsDraft';
 import NewsCategory from '../../views/sandbox/news-manage/NewsCategory';
@@ -37,7 +38,8 @@ const LocalRouterMap = {
 
 }
 
-const NewsRouter = () => {
+const NewsRouter = (props) => {
+    console.log('newRouterProps>>', props);
     const [BackRouteList, setBackRouteList] = useState([])
     useEffect(() => {
         Promise.all([
@@ -63,29 +65,36 @@ const NewsRouter = () => {
 
     return (
         <>
-            <Routes>
-                {
-                    BackRouteList?.map(item => {
-                        if (checkRoute(item) && checkUserPermission(item)) {
-                            return <Route path={item.key} key={item.key} element={LocalRouterMap[item.key]} exact />
+            <Spin size='large' spinning={props.isLoading}>
+                <Routes>
+                    {
+                        BackRouteList?.map(item => {
+                            if (checkRoute(item) && checkUserPermission(item)) {
+                                return <Route path={item.key} key={item.key} element={LocalRouterMap[item.key]} exact />
+                            }
+                            return null
                         }
-                        return null
+                        )
                     }
-                    )
-                }
 
-                {/*  <Route path="/home" element={<Home />} />
+                    {/*  <Route path="/home" element={<Home />} />
                 <Route path="user-manage/list" element={<UserList />} />
                 <Route path="right-manage/role/list" element={<RoleList />} />
                 <Route path="right-manage/right/list" element={<RightList />} />
  */}
 
-                <Route path="/" element={<Navigate replace from="/" to="home" />} />
-                {BackRouteList.length > 0 && <Route path='*' element={<NoPermission />} />}
+                    <Route path="/" element={<Navigate replace from="/" to="home" />} />
+                    {BackRouteList.length > 0 && <Route path='*' element={<NoPermission />} />}
 
-            </Routes>
+                </Routes>
+            </Spin>
         </>
     )
 }
 
-export default NewsRouter
+const mapStateToProps = ({ LoadingReducer: { isLoading } }) => ({
+    isLoading
+})
+
+
+export default connect(mapStateToProps)(NewsRouter)
